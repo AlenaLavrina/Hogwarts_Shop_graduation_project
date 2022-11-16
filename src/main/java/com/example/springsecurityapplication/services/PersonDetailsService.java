@@ -1,4 +1,4 @@
-package com.example.springsecurityapplication.config.services;
+package com.example.springsecurityapplication.services;
 
 import com.example.springsecurityapplication.models.Person;
 import com.example.springsecurityapplication.repositories.PersonRepository;

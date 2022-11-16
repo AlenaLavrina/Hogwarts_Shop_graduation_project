@@ -13,18 +13,20 @@ public class Person {
     private int id;
 
     @NotEmpty(message = "Поле не может быть пустым")
-    @Size(min = 5, max = 10, message = "Значение в поле должно содержать от 5 до 100 символов")
+    @Size(min = 5, max = 100, message = "Значение в поле должно содержать от 5 до 100 символов")
     @Column(name="login")
     private String login;
 
     @NotEmpty(message = "Поле не может быть пустым")
-    @Size(min = 5, max = 10, message = "Значение в поле должно содержать от 5 до 100 символов")
+    @Size(min = 5, max = 100, message = "Значение в поле должно содержать от 5 до 100 символов")
     @Column(name="password")
     private String password;
 
+    @Column(name = "role")
+    private String role;
+
     public Person() {
     }
-
     public Person(int id, String login, String password) {
         this.id = id;
         this.login = login;
@@ -53,5 +55,13 @@ public class Person {
 
     public void setPassword(String password) {
         this.password = password;
+    }
+
+    public String getRole() {
+        return role;
+    }
+
+    public void setRole(String role) {
+        this.role = role;
     }
 }
