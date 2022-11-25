@@ -1,7 +1,9 @@
 package com.example.springsecurityapplication.models;
 
 import javax.persistence.*;
+import javax.validation.constraints.Max;
 import javax.validation.constraints.NotEmpty;
+import javax.validation.constraints.Pattern;
 import javax.validation.constraints.Size;
 
 @Entity
@@ -18,8 +20,10 @@ public class Person {
     private String login;
 
     @NotEmpty(message = "Поле не может быть пустым")
-    @Size(min = 5, max = 100, message = "Значение в поле должно содержать от 5 до 100 символов")
+//    @Size(min = 5, max = 100, message = "Значение в поле должно содержать от 5 до 100 символов")
     @Column(name="password")
+    @Max(value = 100, message = "Пароль не может содержать более 100 символов")
+    @Pattern(regexp="(?=^.{8,}$)((?=.*\\d)|(?=.*\\W+))(?![.\\n])(?=.*[A-Z])(?=.*[a-z]).*$", message = "Пароль должен содержать не менее 8 символов, хотя бы одну цифру, спецсимвол, букву в верхнем регистре и в нижнем регистре")
     private String password;
 
     @Column(name = "role")

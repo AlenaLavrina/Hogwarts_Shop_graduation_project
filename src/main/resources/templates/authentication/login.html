@@ -12,12 +12,15 @@
     <br>
     <input type="text" placeholder="Введите логин" name="username" id="username">
     <br>
+    <br>
     <label for="password">Введите пароль</label>
     <br>
     <input type="password" placeholder="Введите пароль" name="password" id="password">
     <br>
+    <br>
     <input type="submit" value="Войти">
     <div th:if="${param.error}" style="color:red">Неправильный логин или пароль</div>
 </form>
+<a href="/authentication/registration">Регистрация</a>
 </body>
 </html>

@@ -13,13 +13,18 @@
   <input type="text" th:field="*{login}" placeholder="Введите логин" name="username" id="username">
   <div style="color:red" th:if="${#fields.hasErrors('login')}" th:errors="*{login}"></div>
   <br>
+  <br>
   <label for="password">Введите пароль</label>
   <br>
   <input type="password" placeholder="Введите пароль" name="password" id="password">
   <div style="color:red" th:if="${#fields.hasErrors('password')}" th:errors="*{password}"></div>
   <br>
+  <br>
   <input type="submit" value="Зарегистрироваться">
   <div th:if="${param.error}" style="color:red">Неправильный логин или пароль</div>
+  <br>
+  <br>
+  <a href="/authentication/login">Авторизация</a>
 </form>
 </body>
 </html>
