@@ -39,11 +39,20 @@ public class Product {
         imageList.add(image);
     }
     private LocalDateTime dateTime;
+
+    @ManyToOne(optional = false)
+    private Category category;
     //Заполнение даты и времени при создании объекта класса
     @PrePersist
     private void init(){
         dateTime = LocalDateTime.now();
     }
+    @ManyToMany()
+    @JoinTable(name = "product_cart", joinColumns = @JoinColumn(name = "product_id"), inverseJoinColumns = @JoinColumn(name = "person_id"))
+    private List<Person> personList;
+
+    @OneToMany(mappedBy = "product")
+    private List<Order> orderList;
 
     public int getId() {
         return id;
@@ -109,7 +118,15 @@ public class Product {
         this.imageList = imageList;
     }
 
-    public Product(int id, String title, String description, float price, String warehouse, String seller, List<Image> imageList, LocalDateTime dateTime) {
+    public Category getCategory() {
+        return category;
+    }
+
+    public void setCategory(Category category) {
+        this.category = category;
+    }
+
+    public Product(int id, String title, String description, float price, String warehouse, String seller, List<Image> imageList, LocalDateTime dateTime, Category category) {
         this.id = id;
         this.title = title;
         this.description = description;
@@ -118,6 +135,7 @@ public class Product {
         this.seller = seller;
         this.imageList = imageList;
         this.dateTime = dateTime;
+        this.category = category;
     }
 
     public Product() {

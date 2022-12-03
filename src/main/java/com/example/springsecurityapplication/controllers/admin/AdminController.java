@@ -2,6 +2,7 @@ package com.example.springsecurityapplication.controllers.admin;
 
 import com.example.springsecurityapplication.models.Image;
 import com.example.springsecurityapplication.models.Product;
+import com.example.springsecurityapplication.repositories.CategoryRepository;
 import com.example.springsecurityapplication.services.ProductService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
@@ -26,9 +27,12 @@ public class AdminController {
 
     private final ProductService productService;
 
+    private final CategoryRepository categoryRepository;
+
     @Autowired
-    public AdminController(ProductService productService) {
+    public AdminController(ProductService productService, CategoryRepository categoryRepository) {
         this.productService = productService;
+        this.categoryRepository = categoryRepository;
     }
 
     //@PreAuthorize("hasRole('ROLE_ADMIN') and /*or*/ hasRole('ROLE_USER')\")
@@ -39,11 +43,11 @@ public class AdminController {
     }
 
     //http://localhost:8080/admin/product/add
-
     //Метод по отображению страницы с возможностью добавления товаров
     @GetMapping("product/add")
     public String addProduct(Model model){
         model.addAttribute("product", new Product());
+        model.addAttribute("category", categoryRepository.findAll());
         return "product/addProduct";
     }
 
@@ -141,6 +145,7 @@ public class AdminController {
     @GetMapping("/product/edit/{id}")
     public String editProduct(Model model, @PathVariable("id") int id){
         model.addAttribute("product", productService.getProductId(id));
+        model.addAttribute("category", categoryRepository.findAll());
         return "product/editProduct";
     }
 
