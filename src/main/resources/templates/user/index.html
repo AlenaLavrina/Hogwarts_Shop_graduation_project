@@ -31,6 +31,7 @@
         <p>Цена, ₽</p>
         <label for="from">От</label>
         <input type="text" name="from" id="from">
+        <br>
         <label for="to">До</label>
         <input type="text" name="to" id="to">
         <br>
@@ -56,9 +57,28 @@
             <input type="submit" class="search_btn" value="Найти">
         </div>
     </fieldset>
-</form>
-<div>
 
+</form>
+<div class="grid_one1">
+    <div>
+        <h3 th:if="${search_product}">Результат</h3>
+        <div th:if="${search_product}" class="goods">
+            <div th:each="product : ${search_product}">
+                <div class="goods_item">
+                    <img th:src="'/img/' + ${product.imageList[0].getFileName()}" class="goods_img" width="300px">
+                    <div class="goods_title">
+                        <a th:href="@{/product/info/{id}(id=${product.getId()})}" th:text ="${product.getTitle()}"></a>
+                    </div>
+                    <div class="goods_price">
+                        <p th:text="'Цена: ' + ${product.getPrice()}"></p>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+    </div>
+
+<div>
 <h3>Доступные товары</h3>
     <div class="goods">
 <div th:each="product : ${product}">

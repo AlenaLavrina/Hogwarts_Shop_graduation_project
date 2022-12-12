@@ -39,7 +39,8 @@
 </form>
 
     <div>
-        <h3>Результат</h3>
+        <h3 th:if="${search_product}">Результат</h3>
+        <div th:if="${search_order}">
             <div th:each="order : ${search_order}">
                 <h3 th:text="'Заказ №' + ${order.getNumber()}"></h3>
                 <div class="order">
@@ -77,9 +78,8 @@
                         <div class="goods_order_price">
                             <label for="Status">Статус заказа: </label>
                             <div name="Status" id="Status">
-
-                                <div th:each="element : ${T(com.example.springsecurityapplication.enumm.Status).values()}">
-                                    <div th:text="${element}" th:value="${element}"></div>
+                                <div>
+                                    <p th:text="${order.getStatus()}"></p>
                                 </div>
                             </div>
                             <a th:href="@{/admin/orders/editOrder/{id}(id=${order.getId()})}" class="edit_btn">Редактировать заказ</a>
@@ -90,7 +90,6 @@
         </div>
     </div>
 
-<hr>
 
 <div>
 <h3>Доступные заказы</h3>

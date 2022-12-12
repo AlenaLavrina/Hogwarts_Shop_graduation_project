@@ -19,9 +19,11 @@
         <legend>Выберите параметр сортировки</legend>
         <label for="search">Поиск по наименованию: </label>
         <input name="search" id="search" th:value="*{value_search}">
+        <br>
         <p>Цена, ₽</p>
         <label for="from">От</label>
         <input type="text" name="from" id="from" th:value="*{value_price_from}">
+        <br>
         <label for="to">До</label>
         <input type="text" name="to" id="to" th:value="*{value_price_to}">
         <br>
@@ -50,7 +52,7 @@
 </form>
     <div class="grid_one1">
        <div>
-        <h3>Результат</h3>
+        <h3 th:if="${search_product}">Результат</h3>
         <div th:if="${search_product}" class="goods">
         <div th:each="product : ${search_product}">
             <div class="goods_item">
@@ -63,11 +65,12 @@
                 </div>
             </div>
         </div>
+
         </div>
+
             </div>
 
       <div>
-        <hr>
         <h3>Доступные товары</h3>
         <div class="goods">
         <div th:each="product : ${products}">
@@ -84,9 +87,7 @@
         </div>
             </div>
         </div>
-
 </div>
-
 </div>
 </body>
 </html>
