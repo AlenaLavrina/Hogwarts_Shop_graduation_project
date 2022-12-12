@@ -2,10 +2,30 @@
 <html lang="en">
 <head>
     <meta charset="UTF-8">
+  <link th:href="@{/css/index.css}" type="text/css" rel="stylesheet">
     <title>Редактирование товаров</title>
 </head>
-<body>
+<header class="header_admin">
+  <img class="logo" src="/img/logo.png">
+  <form method="get" th:action="@{/admin/product/add}">
+    <input type="submit" class="header_btn" value="Добавить товар">
+  </form>
+  <form method="get" th:action="@{/admin/users}">
+    <input type="submit" class="header_btn" value="Пользователи">
+  </form>
+  <form method="get" th:action="@{/admin/ordersAdmin}">
+    <input type="submit" class="header_btn" value="Заказы">
+  </form>
+  <form method="post" th:action="@{/logout}">
+    <input type="submit" class="header_btn" value="Выйти">
+  </form>
+</header>
+</header>
+<body class="background">
 <h3>Редактирование товаров</h3>
+<div class="grid_two">
+  <div></div>
+  <div class="edit_goods">
 <form th:method="POST" th:action="@{/admin/product/edit/{id}(id=${product.getId()})}" th:object="${product}" enctype="multipart/form-data">
   <label for="title">Введите наименование товара: </label>
   <input type="text" th:field="*{title}" placeholder="Наименование" id="title">
@@ -38,23 +58,11 @@
       <option th:text="${element.getName()}" th:value="${element.getId()}"></option>
     </div>
   </select>
-  <p style="color: red">Вы можете добавить до 5 фотографий. Первая фотография не может быть пустой</p>
-  <input type="file" name="file_one">
   <br>
   <br>
-  <input type="file" name="file_two">
-  <br>
-  <br>
-  <input type="file" name="file_three">
-  <br>
-  <br>
-  <input type="file" name="file_four">
-  <br>
-  <br>
-  <input type="file" name="file_five">
-  <br>
-  <br>
-  <input type="submit" value="Редактировать">
+  <input type="submit" class="edit_btn" value="Редактировать">
 </form>
+  </div>
+</div>
 </body>
 </html>

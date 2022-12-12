@@ -2,19 +2,72 @@
 <html lang="en" xmlns:th="http://www.thymeleaf.org">
 <head>
     <meta charset="UTF-8">
+    <link th:href="@{/css/index.css}" type="text/css" rel="stylesheet">
     <title>Корзина</title>
 </head>
-<body>
+<header>
+    <img class="logo" src="/img/logo.png">
+    <form method="get" th:action="@{/cart}">
+        <input type="submit" class="header_btn" value="Корзина">
+    </form>
+    <form method="get" th:action="@{/orders}">
+        <input type="submit" class="header_btn" value="Заказы">
+    </form>
+    <form method="post" th:action="@{/logout}">
+        <input type="submit" class="header_btn" value="Выйти">
+    </form>
+</header>
+<body class="background">
 <h3>Корзина</h3>
 <div th:each="product : ${cart_product}">
-    <img th:src="'/img/' + ${product.imageList[0].getFileName()}" width="300px">
-    <br>
-    <a th:href="@{/product/info/{id}(id=${product.getId()})}" th:text ="${product.getTitle()}"></a>
-    <p th:text="'Цена: ' + ${product.getPrice()}"></p>
-    <a th:href="@{/cart/delete/{id}(id=${product.getId()})}">Удалить</a>
-    <hr>
+    <div class="cart">
+<div class="goods_cart">
+            <div>
+        <img th:src="'/img/' + ${product.imageList[0].getFileName()}" class="cart_img" width="200px">
+            </div>
 </div>
-<h3 th:text="'Итоговая цена: ' + ${price}"></h3>
-<a href="/order/create">Оформить заказ</a>
+
+        <div class="goods_cart">
+        <div class="goods_cart_title">
+        <a th:href="@{/product/info/{id}(id=${product.getId()})}" th:text ="${product.getTitle()}"></a>
+        </div>
+            </div>
+
+
+        <div class="goods_cart">
+    <div class="goods_cart_price">
+        <p th:text="'Цена: ' + ${product.getPrice()}"></p>
+    </div>
+        </div>
+
+        <div>
+        <div class="delete_cart_btn">
+        <a th:href="@{/cart/delete/{id}(id=${product.getId()})}" class="delete_btn">Удалить</a>
+        </div>
+    </div>
+</div>
+    </div>
+
+
+
+<div class="cart_price">
+    <div>
+        <div class="finish_price">
+            <h3 th:text="'Итоговая цена:'" class="finish_price"></h3>
+        </div>
+    </div>
+
+    <div>
+    <div class="finish_price">
+        <h3 th:text="${price}" class="finish_price"></h3>
+    </div>
+    </div>
+
+    <div>
+    <div class="order_cart_btn">
+        <a href="/order/create" class="delete_btn">Оформить заказ</a>
+    </div>
+    </div>
+</div>
 </body>
 </html>

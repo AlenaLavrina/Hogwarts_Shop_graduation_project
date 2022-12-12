@@ -2,18 +2,64 @@
 <html lang="en" xmlns:th="http://www.thymeleaf.org">
 <head>
     <meta charset="UTF-8">
-    <title>Заказы</title>
+    <link th:href="@{/css/index.css}" type="text/css" rel="stylesheet">
+    <title>Заказы<</title>
 </head>
-<body>
+<header class="header_admin">
+    <img class="logo" src="/img/logo.png">
+    <form method="get" th:action="@{/admin/product/add}">
+        <input type="submit" class="header_btn" value="Добавить товар">
+    </form>
+    <form method="get" th:action="@{/admin/users}">
+        <input type="submit" class="header_btn" value="Пользователи">
+    </form>
+    <form method="get" th:action="@{/admin/ordersAdmin}">
+        <input type="submit" class="header_btn" value="Заказы">
+    </form>
+    <form method="post" th:action="@{/logout}">
+        <input type="submit" class="header_btn" value="Выйти">
+    </form>
+</header>
+<body class="background">
 <h3>Заказы</h3>
 <div th:each="order : ${orders}">
   <h3 th:text="'Заказ №' + ${order.getNumber()}"></h3>
-    <img th:src="'/img/' + ${order.getProduct().imageList[0].getFileName()}" width="300px">
-    <p th:text="'Наименование: ' + ${order.getProduct().getTitle()}"></p>
-    <p th:text="'Количество: ' + ${order.getCount()}"></p>
-    <p th:text="'Цена: ' + ${order.getProduct().getPrice()}"></p>
-    <p th:text="'Дата заказа: ' + ${#temporals.format(order.getDateTime(), 'dd-MMM-yyyy')}"></p>
-    <p th:text="'Статус: ' + ${order.getStatus()}"></p>
+    <div class="order">
+        <div class="goods_cart">
+            <div>
+    <img th:src="'/img/' + ${order.getProduct().imageList[0].getFileName()}" class="cart_img" width="300px">
+            </div>
+        </div>
+
+        <div class="goods_cart">
+            <div class="goods_order_title">
+    <p th:text="${order.getProduct().getTitle()}"></p>
+            </div>
+        </div>
+
+        <div class="goods_cart">
+            <div class="goods_order_price">
+    <p th:text="${order.getCount()}"></p>
+            </div>
+        </div>
+
+        <div class="goods_cart">
+            <div class="goods_order_price">
+    <p th:text="${order.getProduct().getPrice()}"></p>
+            </div>
+        </div>
+
+        <div class="goods_cart">
+            <div class="goods_order_price">
+        <p th:text="${#temporals.format(order.getDateTime(), 'dd-MMM-yyyy')}"></p>
+            </div>
+        </div>
+
+        <div class="goods_cart">
+            <div class="goods_order_price">
+    <p th:text="${order.getStatus()}"></p>
+            </div>
+        </div>
 </div>
 </body>
 </html>

@@ -1,0 +1,55 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <link th:href="@{/css/index.css}" type="text/css" rel="stylesheet">
+    <title>Редактирование пользователя</title>
+</head>
+<header class="header_admin">
+    <img class="logo" src="/img/logo.png">
+    <form method="get" th:action="@{/admin/product/add}">
+        <input type="submit" class="header_btn" value="Добавить товар">
+    </form>
+    <form method="get" th:action="@{/admin/users}">
+        <input type="submit" class="header_btn" value="Пользователи">
+    </form>
+    <form method="get" th:action="@{/admin/ordersAdmin}">
+        <input type="submit" class="header_btn" value="Заказы">
+    </form>
+    <form method="post" th:action="@{/logout}">
+        <input type="submit" class="header_btn" value="Выйти">
+    </form>
+</header>
+<body class="background">
+    <div class="grid_four">
+        <div></div>
+        <div class="edit_user">
+            <form th:method="POST" th:action="@{/admin/editUser/{id}(id=${person.getId()})}" th:object="${person}" enctype="multipart/form-data">
+                <label for="login">Введите имя пользователя: </label>
+                <input type="text" th:field="*{login}" placeholder="Имя пользователя" id="login">
+                <div style="color:red" th:if="${#fields.hasErrors('login')}" th:errors="*{login}"></div>
+                <br>
+                <br>
+                <label for="login">Введите пароль: </label>
+                <input type="text" th:field="*{password}" readonly="readonly" placeholder="Пароль" id="password">
+                <div style="color:red" th:if="${#fields.hasErrors('password')}" th:errors="*{password}"></div>
+                <br>
+                <br>
+                <label for="role">Выберите роль: </label>
+                <select name="Role" id="Role">
+                    <div th:each="element : ${T(com.example.springsecurityapplication.enumm.Roles).values()}">
+                        <option th:text="${element}" th:value="${element}"></option>
+                    </div>
+                </select>
+
+                <br>
+                <br>
+                <div class="edit_user_btn1">
+                <input type="submit" class="edit_user_btn" value="Редактировать">
+                </div>
+            </form>
+        </div>
+
+    </div>
+</body>
+</html>

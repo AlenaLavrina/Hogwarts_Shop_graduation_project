@@ -34,7 +34,7 @@
 //        if(!password.equals(person.getPassword())){
 //            throw new BadCredentialsException("Некорректный пароль");
 //        }
-//        //Возвращаем объект аутентификации. В данном объектебудет лежать объект модели, пароль, права доступа -> ролей нет
+//        //Возвращаем объект аутентификации. В данном объекте будет лежать объект модели, пароль, права доступа -> ролей нет
 //        //Данный объект будет помещен в сессию
 //        return new UsernamePasswordAuthenticationToken(person, password, Collections.emptyList());
 //    }

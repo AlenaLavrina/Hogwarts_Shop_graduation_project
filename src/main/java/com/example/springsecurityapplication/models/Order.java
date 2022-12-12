@@ -1,5 +1,6 @@
 package com.example.springsecurityapplication.models;
 
+
 import com.example.springsecurityapplication.enumm.Status;
 
 import javax.persistence.*;
@@ -20,14 +21,27 @@ public class Order {
     @ManyToOne(optional = false)
     private Person person;
 
+
+    @Enumerated(EnumType.STRING)
+    @Column(name="status")
+    private Status status;
+
     private int count;
     private float price;
     private LocalDateTime dateTime;
-    private Status status;
 
     @PrePersist
     private void init(){
         dateTime = LocalDateTime.now();
+    }
+
+
+    public int getId() {
+        return id;
+    }
+
+    public void setId(int id) {
+        this.id = id;
     }
 
     public String getNumber() {
@@ -90,11 +104,13 @@ public class Order {
         this.number = number;
         this.product = product;
         this.person = person;
+        this.status = status;
         this.count = count;
         this.price = price;
-        this.status = status;
     }
 
     public Order() {
     }
+
+
 }

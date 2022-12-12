@@ -29,7 +29,7 @@ public class PersonDetailsService implements UserDetailsService {
         //Если пользователь не был найден
         if(person.isEmpty()){
             //Выбрасываем исключение, что данный пользователь не найден
-            //Данное исключение будет поймано Spring Security и сообщение бцдет выведено на страницу
+            //Данное исключение будет поймано Spring Security и сообщение будет выведено на страницу
             throw new UsernameNotFoundException("Пользователь не найден");
         }
         return new PersonDetails(person.get());

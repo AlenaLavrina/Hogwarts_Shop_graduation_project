@@ -1,11 +1,20 @@
 package com.example.springsecurityapplication.controllers.admin;
 
 import com.example.springsecurityapplication.models.Image;
+import com.example.springsecurityapplication.models.Order;
+import com.example.springsecurityapplication.models.Person;
 import com.example.springsecurityapplication.models.Product;
 import com.example.springsecurityapplication.repositories.CategoryRepository;
+import com.example.springsecurityapplication.repositories.OrderRepository;
+import com.example.springsecurityapplication.repositories.PersonRepository;
+import com.example.springsecurityapplication.security.PersonDetails;
+import com.example.springsecurityapplication.services.OrderService;
+import com.example.springsecurityapplication.services.PersonService;
 import com.example.springsecurityapplication.services.ProductService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
+import org.springframework.security.core.Authentication;
+import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.validation.BindingResult;
@@ -15,6 +24,7 @@ import org.springframework.web.multipart.MultipartFile;
 import javax.validation.Valid;
 import java.io.File;
 import java.io.IOException;
+import java.util.List;
 import java.util.UUID;
 
 @Controller
@@ -25,12 +35,23 @@ public class AdminController {
     @Value("${upload.path}")
     private String uploadPath;
 
+    private final PersonService personService;
+
+    private final PersonRepository personRepository;
+    private final OrderRepository orderRepository;
+
+    private final OrderService orderService;
+
     private final ProductService productService;
 
     private final CategoryRepository categoryRepository;
 
     @Autowired
-    public AdminController(ProductService productService, CategoryRepository categoryRepository) {
+    public AdminController(PersonService personService, PersonRepository personRepository, OrderRepository orderRepository, OrderService orderService, ProductService productService, CategoryRepository categoryRepository) {
+        this.personService = personService;
+        this.personRepository = personRepository;
+        this.orderRepository = orderRepository;
+        this.orderService = orderService;
         this.productService = productService;
         this.categoryRepository = categoryRepository;
     }
@@ -53,7 +74,7 @@ public class AdminController {
 
     //Метод по добавлению продукта в БД через сервис -> репозиторий
     @PostMapping("/product/add")
-    public String addProduct(@ModelAttribute("product") @Valid Product product, BindingResult bindingResult, @RequestParam("file_one")MultipartFile file_one, @RequestParam("file_two")MultipartFile file_two, @RequestParam("file_three")MultipartFile file_three, @RequestParam("file_four")MultipartFile file_four, @RequestParam("file_five")MultipartFile file_five) throws IOException {
+    public String addProduct(@ModelAttribute("product") @Valid Product product, BindingResult bindingResult, @RequestParam("file_one")MultipartFile file_one, @RequestParam("file_two")MultipartFile file_two, @RequestParam("file_three")MultipartFile file_three) throws IOException {
         if(bindingResult.hasErrors())
         {
             return "product/addProduct";
@@ -102,34 +123,6 @@ public class AdminController {
             image.setFileName(resultFileName);
             product.addImageToProduct(image);;
         }
-        if(file_four != null)
-        {
-            File uploadDir = new File(uploadPath);
-            if(!uploadDir.exists()){
-                uploadDir.mkdir();
-            }
-            String uuidFile = UUID.randomUUID().toString();
-            String resultFileName = uuidFile + "." + file_four.getOriginalFilename();
-            file_four.transferTo(new File(uploadPath + "/" + resultFileName));
-            Image image = new Image();
-            image.setProduct(product);
-            image.setFileName(resultFileName);
-            product.addImageToProduct(image);;
-        }
-        if(file_five != null)
-        {
-            File uploadDir = new File(uploadPath);
-            if(!uploadDir.exists()){
-                uploadDir.mkdir();
-            }
-            String uuidFile = UUID.randomUUID().toString();
-            String resultFileName = uuidFile + "." + file_five.getOriginalFilename();
-            file_five.transferTo(new File(uploadPath + "/" + resultFileName));
-            Image image = new Image();
-            image.setProduct(product);
-            image.setFileName(resultFileName);
-            product.addImageToProduct(image);;
-        }
         productService.saveProduct(product);
         return "redirect:/admin/admin";
     }
@@ -158,4 +151,60 @@ public class AdminController {
         productService.updateProduct(id, product);
         return "redirect:/admin/admin";
     }
+
+    @GetMapping("ordersAdmin")
+    public String ordersUser(Model model){
+        Authentication authentication = SecurityContextHolder.getContext().getAuthentication();
+        PersonDetails personDetails = (PersonDetails) authentication.getPrincipal();
+        List<Order> orderList = orderRepository.findAll();
+        model.addAttribute("orders", orderList);
+        return "/orders/ordersAdmin";
+    }
+
+    @GetMapping("/orders/editOrder/{id}")
+    public String editOrder(Model model, @PathVariable("id") int id){
+        model.addAttribute("order", orderService.getOrderId(id));
+        return "orders/editOrder";
+    }
+    @PostMapping("/orders/editOrder/{id}")
+    public String editOrder(@ModelAttribute("order") @Valid Order order, BindingResult bindingResult, @PathVariable("id") int id){
+        if(bindingResult.hasErrors())
+        {
+            return "orders/editOrder";
+        }
+        orderService.updateOrderStatus(id, order);
+        return "redirect:/admin/admin";
+    }
+
+    @PostMapping("ordersAdmin/search")
+    public String productSearch(@RequestParam("search") String search, Model model){
+        model.addAttribute("search_order", orderRepository.findByLastFourSymbols(search));
+        model.addAttribute("orders",orderService.getAllOrder());
+        return "/orders/ordersAdmin";
+    }
+
+    @GetMapping("/users")
+    public String getAllPerson(Model model){
+        model.addAttribute("person", personService.getAllPerson());
+        return "admin/users";
+    }
+
+    //Метод по отображению страницы с возможностью редактирования товаров
+    @GetMapping("/editUser/{id}")
+    public String editPerson(Model model, @PathVariable("id") int id){
+        model.addAttribute("person", personService.getPersonId(id));
+        model.addAttribute("role", personRepository.findAll());
+        return "admin/editUser";
+    }
+
+    @PostMapping("/editUser/{id}")
+    public String editPerson(@ModelAttribute("person") @Valid Person person, BindingResult bindingResult, @PathVariable("id") int id){
+        if(bindingResult.hasErrors())
+        {
+            return "admin/users";
+        }
+        personService.updatePerson(id, person);
+        return "redirect:/admin/admin";
+    }
+
 }

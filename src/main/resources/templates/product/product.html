@@ -2,16 +2,23 @@
 <html lang="en" xmlns:th="http://www.thymeleaf.org">
 <head>
     <meta charset="UTF-8">
-    <title>Список товаров</title>
+    <link th:href="@{/css/index.css}" type="text/css" rel="stylesheet">
+    <title>Главная страница</title>
 </head>
-<body>
+<header>
+    <img class="logo" src="/img/logo.png">
+    <form method="get" th:action="@{/authentication/login}">
+        <input type="submit" class="header_btn" value="Вход | Регистрация">
+    </form>
+</header>
+<body class="background">
+<h3 class="h3_product">Главная страница магазина</h3>
 <form th:method="POST" th:action="@{/product/search}">
-    <fieldset>
+        <div class="grid_one">
+    <fieldset class="sort">
         <legend>Выберите параметр сортировки</legend>
-        <br>
         <label for="search">Поиск по наименованию: </label>
         <input name="search" id="search" th:value="*{value_search}">
-        <br>
         <p>Цена, ₽</p>
         <label for="from">От</label>
         <input type="text" name="from" id="from" th:value="*{value_price_from}">
@@ -29,35 +36,57 @@
             <br>
             <br>
             <p>Категория товаров: </p>
-            <input type="radio" id="furniture" name="contact" value="furniture">
-            <label for="furniture">Мебель</label>
-            <input type="radio" id="appliances" name="contact" value="appliances">
-            <label for="appliances">Бытовая техника</label>
             <input type="radio" id="clothes" name="contact" value="clothes">
             <label for="clothes">Одежда</label>
+            <input type="radio" id="documents" name="contact" value="documents">
+            <label for="documents">Документы</label>
+            <input type="radio" id="accessories" name="contact" value="accessories">
+            <label for="accessories">Принадлежности</label>
             <br>
             <br>
-            <input type="submit" value="Найти">
+            <input type="submit" class="search_btn" value="Найти">
         </div>
     </fieldset>
-    <br>
 </form>
-<h3>Результат</h3>
-<div th:each="product : ${search_product}">
-    <img th:src="'/img/' + ${product.imageList[0].getFileName()}" width="300px">
-    <br>
-    <a th:href="@{/product/info/{id}(id=${product.getId()})}" th:text ="${product.getTitle()}"></a>
-    <p th:text="'Цена: ' + ${product.getPrice()}"></p>
+    <div class="grid_one1">
+       <div>
+        <h3>Результат</h3>
+        <div th:if="${search_product}" class="goods">
+        <div th:each="product : ${search_product}">
+            <div class="goods_item">
+            <img th:src="'/img/' + ${product.imageList[0].getFileName()}" class="goods_img" width="300px">
+            <div class="goods_title">
+            <a th:href="@{/product/info/{id}(id=${product.getId()})}" th:text ="${product.getTitle()}"></a>
+            </div>
+            <div class="goods_price">
+            <p th:text="'Цена: ' + ${product.getPrice()}"></p>
+                </div>
+            </div>
+        </div>
+        </div>
+            </div>
+
+      <div>
+        <hr>
+        <h3>Доступные товары</h3>
+        <div class="goods">
+        <div th:each="product : ${products}">
+            <div class="goods_item">
+            <img th:src="'/img/' + ${product.imageList[0].getFileName()}" class="goods_img" width="300px">
+        <div class="goods_title">
+            <a th:href="@{/product/info/{id}(id=${product.getId()})}" th:text ="${product.getTitle()}"></a>
+        </div>
+        <div class="goods_price">
+            <p th:text="'Цена: ' + ${product.getPrice()}"></p>
+        </div>
+        </div>
+        </div>
+        </div>
+            </div>
+        </div>
+
 </div>
-<hr>
-<h3>Доступные товары</h3>
-<hr>
-<div th:each="product : ${products}">
-    <img th:src="'/img/' + ${product.imageList[0].getFileName()}" width="300px">
-    <br>
-    <a th:href="@{/product/info/{id}(id=${product.getId()})}" th:text ="${product.getTitle()}"></a>
-    <p th:text="'Цена: ' + ${product.getPrice()}"></p>
-<hr>
+
 </div>
 </body>
 </html>

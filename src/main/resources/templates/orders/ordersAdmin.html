@@ -1,0 +1,150 @@
+<!DOCTYPE html>
+<html lang="en" xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="UTF-8">
+    <link th:href="@{/css/index.css}" type="text/css" rel="stylesheet">
+    <title>Заказы</title>
+</head>
+<header class="header_admin">
+    <img class="logo" src="/img/logo.png">
+    <form method="get" th:action="@{/admin/product/add}">
+        <input type="submit" class="header_btn" value="Добавить товар">
+    </form>
+    <form method="get" th:action="@{/admin/users}">
+        <input type="submit" class="header_btn" value="Пользователи">
+    </form>
+    <form method="get" th:action="@{/admin/ordersAdmin}">
+        <input type="submit" class="header_btn" value="Заказы">
+    </form>
+    <form method="post" th:action="@{/logout}">
+        <input type="submit" class="header_btn" value="Выйти">
+    </form>
+</header>
+<body class="background">
+<h3>Заказы</h3>
+<form th:method="POST" th:action="@{/admin/ordersAdmin/search}">
+    <div class="search_order">
+        <div class="search_order">
+        <fieldset class="search_order1">
+            <legend class="search_legend">Поиск</legend>
+            <label for="search" class="search_label">Введите последние 4 цифры/буквы заказа</label>
+            <br>
+            <input name="search" id="search" th:value="*{value_search}">
+            <div class="search_order_btn1">
+                <input type="submit" class="search_order_btn" value="Найти">
+            </div>
+        </fieldset>
+        </div>
+    </div>
+</form>
+
+    <div>
+        <h3>Результат</h3>
+            <div th:each="order : ${search_order}">
+                <h3 th:text="'Заказ №' + ${order.getNumber()}"></h3>
+                <div class="order">
+                    <div class="goods_cart">
+                        <div>
+                            <img th:src="'/img/' + ${order.getProduct().imageList[0].getFileName()}" class="cart_img" width="300px">
+                        </div>
+                    </div>
+
+                    <div class="goods_cart">
+                        <div class="goods_order_title">
+                            <p th:text="${order.getProduct().getTitle()}"></p>
+                        </div>
+                    </div>
+
+                    <div class="goods_cart">
+                        <div class="goods_order_price">
+                            <p th:text="${order.getCount()}"></p>
+                        </div>
+                    </div>
+
+                    <div class="goods_cart">
+                        <div class="goods_order_price">
+                            <p th:text="${order.getProduct().getPrice()}"></p>
+                        </div>
+                    </div>
+
+                    <div class="goods_cart">
+                        <div class="goods_order_price">
+                            <p th:text="${#temporals.format(order.getDateTime(), 'dd-MMM-yyyy')}"></p>
+                        </div>
+                    </div>
+
+                    <div class="goods_cart">
+                        <div class="goods_order_price">
+                            <label for="Status">Статус заказа: </label>
+                            <div name="Status" id="Status">
+
+                                <div th:each="element : ${T(com.example.springsecurityapplication.enumm.Status).values()}">
+                                    <div th:text="${element}" th:value="${element}"></div>
+                                </div>
+                            </div>
+                            <a th:href="@{/admin/orders/editOrder/{id}(id=${order.getId()})}" class="edit_btn">Редактировать заказ</a>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+<hr>
+
+<div>
+<h3>Доступные заказы</h3>
+<div th:each="order : ${orders}">
+    <form th:method="POST" th:action="@{/admin/orders/ordersAdmin/editOrder/{id}(id=${order.getId()})}" th:object="${order}" enctype="multipart/form-data">
+  <h3 th:text="'Заказ №' + ${order.getNumber()}"></h3>
+    <div class="order">
+        <div class="goods_cart">
+            <div>
+    <img th:src="'/img/' + ${order.getProduct().imageList[0].getFileName()}" class="cart_img" width="300px">
+            </div>
+        </div>
+
+        <div class="goods_cart">
+            <div class="goods_order_title">
+    <p th:text="${order.getProduct().getTitle()}"></p>
+            </div>
+        </div>
+
+        <div class="goods_cart">
+            <div class="goods_order_price">
+    <p th:text="${order.getCount()}"></p>
+            </div>
+        </div>
+
+        <div class="goods_cart">
+            <div class="goods_order_price">
+    <p th:text="${order.getProduct().getPrice()}"></p>
+            </div>
+        </div>
+
+        <div class="goods_cart">
+            <div class="goods_order_price">
+        <p th:text="${#temporals.format(order.getDateTime(), 'dd-MMM-yyyy')}"></p>
+            </div>
+        </div>
+
+        <div class="goods_cart">
+            <div class="goods_order_price">
+
+                <label for="Status">Статус заказа: </label>
+                <div name="Status" id="Status">
+                    <div>
+                        <p th:text="${order.getStatus()}"></p>
+                    </div>
+                </div>
+                <a th:href="@{/admin/orders/editOrder/{id}(id=${order.getId()})}" class="edit_btn">Редактировать заказ</a>
+
+<!--    <p th:text="${order.getStatus()}"></p>-->
+            </div>
+        </div>
+    </div>
+    </form>
+</div>
+</div>
+</body>
+</html>

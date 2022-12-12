@@ -1,0 +1,66 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <link th:href="@{/css/index.css}" type="text/css" rel="stylesheet">
+    <title>Редактирование заказа</title>
+</head>
+<header class="header_admin">
+    <img class="logo" src="/img/logo.png">
+    <form method="get" th:action="@{/admin/product/add}">
+        <input type="submit" class="header_btn" value="Добавить товар">
+    </form>
+    <form method="get" th:action="@{/admin/users}">
+        <input type="submit" class="header_btn" value="Пользователи">
+    </form>
+    <form method="get" th:action="@{/admin/ordersAdmin}">
+        <input type="submit" class="header_btn" value="Заказы">
+    </form>
+    <form method="post" th:action="@{/logout}">
+        <input type="submit" class="header_btn" value="Выйти">
+    </form>
+</header>
+<body class="background">
+<div class="grid_two">
+    <div></div>
+    <div class="edit_orders">
+        <form th:method="POST" th:action="@{/admin/orders/editOrder/{id}(id=${order.getId()})}" th:object="${order}" enctype="multipart/form-data">
+            <h3 th:text="'Заказ №' + ${order.getNumber()}"></h3>
+            <label for="number">Номер заказа: </label>
+            <input type="text" th:field="*{number}" placeholder="Номер заказа" id="number">
+            <div style="color:red" th:if="${#fields.hasErrors('number')}" th:errors="*{number}"></div>
+            <br>
+            <br>
+            <label for="product">Товар: </label>
+            <textarea th:field="*{product}" placeholder="Товар" id="product"></textarea>
+            <div style="color:red" th:if="${#fields.hasErrors('product')}" th:errors="*{product}"></div>
+            <br>
+            <br>
+            <label for="person">Покупатель: </label>
+            <input type="text" th:field="*{person}" id="person">
+            <div style="color:red" th:if="${#fields.hasErrors('person')}" th:errors="*{person}"></div>
+            <br>
+            <br>
+            <label for="count">Количество: </label>
+            <input type="number" th:field="*{count}" placeholder="Склад" id="count">
+            <div style="color:red" th:if="${#fields.hasErrors('count')}" th:errors="*{count}"></div>
+            <br>
+            <br>
+            <label>Цена: </label>
+            <input type="number" th:field="*{price}" min="1" step="0.00" id="price">
+            <div style="color:red" th:if="${#fields.hasErrors('price')}" th:errors="*{price}"></div>
+            <br>
+            <br>
+            <label for="Status">Статус заказа: </label>
+            <select name="Status" id="Status">
+                <div th:each="element : ${T(com.example.springsecurityapplication.enumm.Status).values()}">
+                    <option th:text="${element}" th:value="${element}"></option>
+                </div>
+            </select>
+
+            <input type="submit" class="edit_btn" value="Редактировать">
+        </form>
+    </div>
+</div>
+</body>
+</html>

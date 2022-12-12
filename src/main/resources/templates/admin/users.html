@@ -1,0 +1,50 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+  <link th:href="@{/css/index.css}" type="text/css" rel="stylesheet">
+    <title>Пользователи</title>
+</head>
+<header class="header_admin">
+    <img class="logo" src="/img/logo.png">
+    <form method="get" th:action="@{/admin/product/add}">
+        <input type="submit" class="header_btn" value="Добавить товар">
+    </form>
+    <form method="get" th:action="@{/admin/users}">
+        <input type="submit" class="header_btn" value="Пользователи">
+    </form>
+    <form method="get" th:action="@{/admin/ordersAdmin}">
+        <input type="submit" class="header_btn" value="Заказы">
+    </form>
+    <form method="post" th:action="@{/logout}">
+        <input type="submit" class="header_btn" value="Выйти">
+    </form>
+</header>
+<body class="background">
+<h3>Пользователи</h3>
+<form th:method="POST" th:action="@{/users}">
+<div>
+    <div class="users">
+        <div th:each="person : ${person}">
+            <div class="users_item">
+                <div>
+                    <p th:text="'Логин: '"></p>
+                    <a th:href="@{/person/info/{id}(id=${person.getLogin()})}" th:text ="${person.getLogin()}"></a>
+                </div>
+                <div>
+                    <p th:text="'Роль: '"></p>
+                    <a th:href="@{/person/info/{id}(id=${person.getRole()})}" th:text ="${person.getRole()}"></a>
+                </div>
+
+                <div class="edit_users_btn1">
+                <a th:href="@{/admin/editUser/{id}(id=${person.getId()})}" class="edit_users_btn">Редактировать пользователя</a>
+                </div>
+            </div>
+
+            </div>
+        </div>
+    </div>
+</div>
+</form>
+</body>
+</html>

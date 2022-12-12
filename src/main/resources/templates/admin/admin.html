@@ -2,25 +2,47 @@
 <html lang="en" xmlns:th="http://www.thymeleaf.org">
 <head>
     <meta charset="UTF-8">
+    <link th:href="@{/css/index.css}" type="text/css" rel="stylesheet">
     <title>Личный кабинет администратора</title>
 </head>
-<body>
+<header class="header_admin">
+    <img class="logo" src="/img/logo.png">
+    <form method="get" th:action="@{/admin/product/add}">
+        <input type="submit" class="header_btn" value="Добавить товар">
+    </form>
+    <form method="get" th:action="@{/admin/users}">
+        <input type="submit" class="header_btn" value="Пользователи">
+    </form>
+    <form method="get" th:action="@{/admin/ordersAdmin}">
+        <input type="submit" class="header_btn" value="Заказы">
+    </form>
+    <form method="post" th:action="@{/logout}">
+        <input type="submit" class="header_btn" value="Выйти">
+    </form>
+</header>
+<body class="background">
 <h3>Личный кабинет администратора</h3>
-<form method="post" th:action="@{/logout}">
-    <input type="submit" value="Выйти из личного кабинета">
-    <br>
-</form>
-<a href="/admin/product/add">Добавить товар</a>
 <hr>
+<div class="goods_admin"></div>
 <div th:each="product : ${products}">
+    <div class="goods_item_admin">
     <p th:text="'Наименование: ' + ${product.getTitle()}"></p>
     <p th:text="'Описание: ' + ${product.getDescription()}"></p>
     <p th:text="'Цена: ' + ${product.getPrice()}"></p>
     <p th:text="'Склад: ' + ${product.getWarehouse()}"></p>
     <p th:text="'Продавец: ' + ${product.getSeller()}"></p>
     <p th:text="'Категория: ' + ${product.getCategory().getName()}"></p>
-    <a th:href="@{/admin/product/edit/{id}(id=${product.getId()})}">Редактировать товар</a>
-    <a th:href="@{/admin/product/delete/{id}(id=${product.getId()})}">Удалить товар</a>
+        <div class="grid_btn">
+            <div>
+    <a th:href="@{/admin/product/edit/{id}(id=${product.getId()})}" class="edit_btn">Редактировать товар</a>
+            </div>
+            <div>
+    <a th:href="@{/admin/product/delete/{id}(id=${product.getId()})}" class="edit_btn">Удалить товар</a>
+            </div>
+    </div>
+    </div>
+    </div>
+</div>
 </div>
 </body>
 </html>
